@@ -31,6 +31,7 @@ function Calendar(props: CalendarProps) {
         onChange
     } = props;
 
+    // 封装支持受控&非受控模式
     const [curValue, setCurValue] = useControllableValue<Dayjs>(props, {
         defaultValue: dayjs()
     });

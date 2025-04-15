@@ -3,6 +3,7 @@ import Watermark from "./Watermark";
 const App = () => {
   return <Watermark
     content={['测试水印', '神说要有光']}
+    // content='神说要有光'
     // gap={[0, 0]}
     // offset={[50, 100]}
     // fontStyle={{

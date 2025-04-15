@@ -8,6 +8,7 @@ function App() {
   return (
     <div className="App">
       <Calendar value={value} onChange={(val) => {
+        console.log('触发了change～') // 这里会触发两次
         setValue(val)
       }}></Calendar>
     </div>

@@ -10,9 +10,14 @@ interface MonthCalendarProps extends CalendarProps {
     curMonth: Dayjs
 }
 
+/**
+ * 获取当月所有天数信息
+ * @param date 
+ * @returns 
+ */
 function getAllDays(date: Dayjs) {
-    const startDate = date.startOf('month');
-    const day = startDate.day()    
+    const startDate = date.startOf('month'); // 获取当月第一天
+    const day = startDate.day()  // 获取当月第一天是星期几
 
     const daysInfo: Array<{date: Dayjs, currentMonth: boolean}> = new Array(6 * 7);
 
@@ -52,7 +57,7 @@ function MonthCalendar(props: MonthCalendarProps) {
 
     const weekList = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
-    const allDays = getAllDays(curMonth);
+    const allDays = getAllDays(curMonth); // 获取当月所有日期信息
 
 
     function renderDays(
@@ -63,16 +68,17 @@ function MonthCalendar(props: MonthCalendarProps) {
             const row = [];
             for(let j = 0; j < 7; j++) {
                 const item = days[i * 7 + j];
+                // 封装单元格
                 row[j] = <div className={
-                    "calendar-month-body-cell " + (item.currentMonth ? 'calendar-month-body-cell-current' : '')
+                    "calendar-month-body-cell " + (item.currentMonth ? 'calendar-month-body-cell-current' : '') // 日期是当月，则添加样式
                 }
-                    onClick={() => selectHandler?.(item.date)}
+                    onClick={() => selectHandler?.(item.date)} // 点击单元格，触发事件
                 >
                     {
-                        dateRender ? dateRender(item.date) : (
+                        dateRender ? dateRender(item.date) : ( // 如果使用自定义dateRender，那么需要处理选中样式，最好配合受控模式
                             <div className="calendar-month-body-cell-date">
                                 <div className={
-                                    cs("calendar-month-body-cell-date-value",
+                                    cs("calendar-month-body-cell-date-value", // class合并
                                         value?.format('YYYY-MM-DD') === item.date.format('YYYY-MM-DD')
                                             ? "calendar-month-body-cell-date-selected"
                                             : ""
@@ -86,7 +92,7 @@ function MonthCalendar(props: MonthCalendarProps) {
             }
             rows.push(row);
         }
-        return rows.map(row => <div className="calendar-month-body-row">{row}</div>)
+        return rows.map(row => <div className="calendar-month-body-row">{row}</div>) // 封装行
     }
 
     return <div className="calendar-month">

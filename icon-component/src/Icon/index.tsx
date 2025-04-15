@@ -10,6 +10,7 @@ type BaseIconProps = {
     spin?: boolean;
 };
 
+// 允许自定义基础prop类型 & 所有svg属性
 export type IconProps = BaseIconProps & Omit<React.SVGAttributes<SVGElement>, keyof BaseIconProps>;
 
 export const getSize = (size: IconProps['size']) => {
@@ -17,6 +18,7 @@ export const getSize = (size: IconProps['size']) => {
         return size as string[];
     }
 
+    // 当 SVG 的尺寸使用 em 单位时，它会相对于当前上下文的 font-size 来计算实际大小
     const width = (size as string) || '1em';
     const height = (size as string) || '1em';
 
@@ -36,7 +38,7 @@ export const Icon = forwardRef<SVGSVGElement, PropsWithChildren<IconProps>>((pro
 
     const [width, height] = getSize(size);
 
-    const cn = cs(
+    const cn = cs( // 类名合并
         'icon',
         {
             'icon-spin': spin

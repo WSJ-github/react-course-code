@@ -3,6 +3,7 @@ import { createFromIconfont } from './Icon/createFrontIconfont';
 import { IconAdd } from './Icon/icons/IconAdd';
 import { IconEmail } from './Icon/icons/IconEmail';
 
+// 传入iconfont项目的js文件地址，返回一个icon组件
 const IconFont = createFromIconfont('//at.alicdn.com/t/c/font_4443338_a2wwqhorbk4.js');
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
   return (
     <div>
       <div style={ {padding: '50px'} }>
+        {/* 用户自定义icon */}
         <IconAdd size='40px' ref={ref}></IconAdd>
         <IconEmail spin></IconEmail>
         <IconEmail style={{color: 'blue', fontSize: '50px'}}></IconEmail>

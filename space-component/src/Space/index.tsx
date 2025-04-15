@@ -41,7 +41,7 @@ const Space: React.FC<SpaceProps> = props => {
     ...otherProps
   } = props;
 
-  const childNodes = React.Children.toArray(children);
+  const childNodes = React.Children.toArray(children); // 和props.children的区别是会默认扁平化（把属于第一层的children全部展开）
 
   const mergedAlign = direction === 'horizontal' && align === undefined ? 'center' : align;
   const cn = classNames(

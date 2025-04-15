@@ -16,10 +16,11 @@ export interface WatermarkProps extends PropsWithChildren {
       fontSize?: number | string;
       fontWeight?: number | string;
     };
-    gap?: [number, number];
-    offset?: [number, number];
-    getContainer?: () => HTMLElement;
+    gap?: [number, number]; // 水印之间的间距
+    offset?: [number, number]; // 水印在容器中的偏移量
+    getContainer?: () => HTMLElement; // 获取水印容器的函数
 }
+
 
 const Watermark: FC<WatermarkProps>  = (props) => {
 

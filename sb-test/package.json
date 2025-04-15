@@ -12,6 +12,7 @@
     "@types/node": "^16.18.61",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
+    "ahooks": "^3.8.1",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.10",
     "react": "^18.2.0",
@@ -60,8 +61,8 @@
     "@storybook/testing-library": "^0.2.2",
     "babel-plugin-named-exports-order": "^0.0.2",
     "eslint-plugin-storybook": "^0.6.15",
-    "sass": "latest",
     "prop-types": "^15.8.1",
+    "sass": "latest",
     "storybook": "^7.5.3",
     "webpack": "^5.89.0"
   }

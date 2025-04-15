@@ -1,4 +1,4 @@
-import ResizeObserver from 'resize-observer-polyfill';
+// import ResizeObserver from 'resize-observer-polyfill';
 import { RefObject, useEffect, useState } from 'react';
 
 type Size = { width: number; height: number };

@@ -12,6 +12,9 @@ const meta = {
     argTypes: {
         value: {
             control: 'date'
+        },
+        defaultValue: {
+            control: 'date'
         }
     },
 } satisfies Meta<typeof Calendar>;
@@ -28,9 +31,17 @@ const renderCalendar = (args: CalendarProps) => {
     return <Calendar {...args}/>
 }
 
-export const Value: Story = {
+// TODO: 对应组件的Docs默认预览用的 第一个导出的Story
+export const Value: Story = { // 可控mode
     args: {
         value: dayjs('2023-11-08')
+    },
+    render: renderCalendar
+};
+
+export const defaultValue: Story = { // 非可控mode
+    args: {
+        defaultValue: dayjs('2023-11-08')
     },
     render: renderCalendar
 };

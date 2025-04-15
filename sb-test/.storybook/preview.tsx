@@ -4,19 +4,22 @@ import { Title, Subtitle, Description, Primary, Controls, Stories } from '@story
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: "^on[A-Z].*" },
+    actions: { argTypesRegex: "^on[A-Z].*" }, // 匹配事件
     controls: {
       matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/i,
+        color: /(background|color)$/i, // 匹配颜色
+        date: /Date$/i, // 匹配日期
       },
     },
     docs: {
       page: () => (
         <>
-          <Primary />
           <Title />
+          <Subtitle />
+          <Description />
+          <Primary />
           <Controls />
+          <Stories />
         </>
       ),
     },
