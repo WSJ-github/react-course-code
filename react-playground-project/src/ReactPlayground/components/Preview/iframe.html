@@ -8,6 +8,7 @@
 <body>
 <script>
     window.addEventListener('error', (e) => {
+        // 捕获错误后，将错误信息发送给父窗口，父窗口通过window.addEventListener('message', handleMessage)接收
         window.parent.postMessage({type: 'ERROR', message: e.message})
     })
 </script>

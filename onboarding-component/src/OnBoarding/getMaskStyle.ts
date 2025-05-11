@@ -1,3 +1,6 @@
+/***
+ * 计算实时mask的样式
+ */
 export const getMaskStyle = (element: HTMLElement, container: HTMLElement) => {
     if (!element) {
       return {};

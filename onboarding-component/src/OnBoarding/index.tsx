@@ -22,9 +22,9 @@ export interface OnBoardingProps {
 
   steps: OnBoardingStepConfig[];
 
-  getContainer?: () => HTMLElement;
+  getContainer?: () => HTMLElement; // 获取容器元素
 
-  onStepsEnd?: () => void;
+  onStepsEnd?: () => void; // 所有步骤结束后的回调
 }
 
 export const OnBoarding:FC<OnBoardingProps> = (props) => {
@@ -37,9 +37,9 @@ export const OnBoarding:FC<OnBoardingProps> = (props) => {
 
   const [currentStep, setCurrentStep] = useState<number>(0);
 
-  const currentSelectedElement = steps[currentStep]?.selector();
+  const currentSelectedElement = steps[currentStep]?.selector(); // 获取当前步骤的元素
 
-  const currentContainerElement = getContainer?.() || document.documentElement;
+  const currentContainerElement = getContainer?.() || document.documentElement; // 获取容器元素
 
   const [done, setDone] = useState(false);
 
@@ -49,25 +49,27 @@ export const OnBoarding:FC<OnBoardingProps> = (props) => {
     return steps[currentStep];
   };
 
+  // 上一步
   const back = async () => {
     if (currentStep === 0) {
       return;
     }
 
     const { beforeBack } = getCurrentStep();
-    await beforeBack?.(currentStep);
+    await beforeBack?.(currentStep); // step中定义的beforeBack回调
     setCurrentStep(currentStep - 1);
   };
 
+  // 下一步
   const forward = async () => {
     if (currentStep === steps.length - 1) {
-      await onStepsEnd?.();
+      await onStepsEnd?.(); // 所有步骤结束后的回调
       setDone(true);
       return;
     }
 
     const { beforeForward } = getCurrentStep();
-    await beforeForward?.(currentStep);
+    await beforeForward?.(currentStep); // step中定义的beforeForward回调
     setCurrentStep(currentStep + 1);
   };
 
@@ -76,6 +78,7 @@ export const OnBoarding:FC<OnBoardingProps> = (props) => {
   }, [step]);
 
   const renderPopover = (wrapper: React.ReactNode) => {
+    console.log('renderPopover', isMaskMoving);
     const config = getCurrentStep();
 
     if (!config) {

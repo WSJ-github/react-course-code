@@ -7,17 +7,25 @@ import { Color } from './ColorPicker/color';
 function App() {
   const [color, setColor] = useState<Color>(new Color('rgb(166,57,255)'));
 
+  /**
+   * 色相
+   * @param e 事件对象
+   */
   const handleHueChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const hsv = color.toHsv();
     let val = +e.target.value;
 
     setColor(new Color({
-        h: val,
-        s: hsv.s,
-        v: hsv.v,
+        h: val, // 色相
+        s: hsv.s, // 饱和度
+        v: hsv.v, // 明度
     }))
   }
 
+  /**
+   * 明度
+   * @param e 事件对象
+   */
   const handleVChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const hsv = color.toHsv();
     let val = +e.target.value;

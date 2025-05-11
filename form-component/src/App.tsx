@@ -1,4 +1,4 @@
-import { Button, Checkbox, Input } from "antd";
+import { Button, Checkbox, Input, Form as AntdForm } from "antd";
 import Form from "./Form/index";
 import { useEffect, useRef } from "react";
 import { FormRefApi } from "./Form/Form";
@@ -17,11 +17,11 @@ const Basic: React.FC = () => {
   return (
     <>
       <Button type="primary" onClick={() => {
-        console.log(form.current?.getFieldsValue())
+        console.log(form.current?.getFieldsValue()) // 全局表单Store中所有表单项的值
       }}>打印表单值</Button>
 
       <Button type="primary" onClick={() => {
-        form.current?.setFieldsValue({
+        form.current?.setFieldsValue({ // 设置表单值，会触发Form组件的rerender
           username: '东东东'
         })
       }}>设置表单值</Button>
@@ -66,5 +66,30 @@ const Basic: React.FC = () => {
     </>
   );
 };
+
+const App2 = () => {
+  const [form]= AntdForm.useForm();
+  
+  useEffect(() => {
+    form.setFieldsValue({
+      a: {
+        b: {
+          c: 'ccc'
+        }
+      },
+      d: {
+        e : 'eee'
+      }
+    })
+  }, []);
+
+  return (
+    <AntdForm form={form}>
+      <AntdForm.Item name={['d', 'e']}>
+        <Input/>
+      </AntdForm.Item>
+    </AntdForm>
+  )
+}
 
 export default Basic;

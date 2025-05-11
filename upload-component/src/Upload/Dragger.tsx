@@ -12,15 +12,17 @@ export const Dragger: FC<DraggerProps> = (props) => {
   const [ dragOver, setDragOver ] = useState(false)
 
   const cs = classNames('upload-dragger', {
-    'is-dragover': dragOver
+    'is-dragover': dragOver // 控制拖拽上传的样式
   })
 
+  // 拖拽结束，下落
   const handleDrop = (e: DragEvent<HTMLElement>) => {
     e.preventDefault()
     setDragOver(false)
     onFile(e.dataTransfer.files)
   }
   
+  // onDragOver & onDragLeave
   const handleDrag = (e: DragEvent<HTMLElement>, over: boolean) => {
     e.preventDefault()
     setDragOver(over)

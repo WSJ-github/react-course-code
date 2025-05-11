@@ -6,20 +6,20 @@ import UploadList, { UploadFile } from './UploadList';
 import Dragger from './Dragger';
 
 export interface UploadProps extends PropsWithChildren{
-  action: string;
-  headers?: Record<string, any>;
-  name?: string;
-  data?: Record<string, any>;
-  withCredentials?: boolean;
-  accept?: string;
-  multiple?: boolean;
-  beforeUpload? : (file: File) => boolean | Promise<File>;
-  onProgress?: (percentage: number, file: File) => void;
-  onSuccess?: (data: any, file: File) => void;
-  onError?: (err: any, file: File) => void;
-  onChange?: (file: File) => void;
-  onRemove?: (file: UploadFile) => void;
-  drag: boolean;
+  action: string; // 上传的地址
+  headers?: Record<string, any>; // 请求头
+  name?: string; // 上传的文件名
+  data?: Record<string, any>; // 上传的文件数据
+  withCredentials?: boolean; // 是否携带凭证
+  accept?: string; // 限制input文件框上传的文件类型
+  multiple?: boolean; // 是否支持多选
+  beforeUpload? : (file: File) => boolean | Promise<File>; // 上传前的钩子
+  onProgress?: (percentage: number, file: File) => void; // 上传中进度钩子
+  onSuccess?: (data: any, file: File) => void; // 上传成功的钩子
+  onError?: (err: any, file: File) => void; // 上传失败的钩子
+  onChange?: (file: File) => void; // 上传文件状态改变的钩子
+  onRemove?: (file: UploadFile) => void; // 删除文件的钩子
+  drag: boolean; // 是否开启拖拽上传
 }
 
 export const Upload: FC<UploadProps> = (props) => {
@@ -43,8 +43,9 @@ export const Upload: FC<UploadProps> = (props) => {
 
   const fileInput = useRef<HTMLInputElement>(null);
 
-  const [ fileList, setFileList ] = useState<Array<UploadFile>>([]);
+  const [ fileList, setFileList ] = useState<Array<UploadFile>>([]); // 文件列表
 
+  // 更新文件列表
   const updateFileList = (updateFile: UploadFile, updateObj: Partial<UploadFile>) => {
     setFileList(prevList => {
       return prevList.map(file => {
@@ -57,6 +58,7 @@ export const Upload: FC<UploadProps> = (props) => {
     })
   }
 
+  // 删除文件
   const handleRemove = (file: UploadFile) => {
     setFileList((prevList) => {
       return prevList.filter(item => item.uid !== file.uid)
@@ -66,23 +68,27 @@ export const Upload: FC<UploadProps> = (props) => {
     }
   }
 
+  // 点击上传按钮
   const handleClick = () => {
     if (fileInput.current) {
         fileInput.current.click()
     }
   }
 
+  // 文件选择框改变
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if(!files) {
         return
     }
     uploadFiles(files)
+    // 清空文件选择框
     if (fileInput.current) {
         fileInput.current.value = ''
     }
   }
 
+  // 上传文件
   const uploadFiles = (files: FileList) => {
     let postFiles = Array.from(files)
     postFiles.forEach(file => {
@@ -101,6 +107,7 @@ export const Upload: FC<UploadProps> = (props) => {
     })
   }
 
+  // 上传文件
   const post = (file: File) => {
     let uploadFile: UploadFile = {
         uid: Date.now() + 'upload-file',

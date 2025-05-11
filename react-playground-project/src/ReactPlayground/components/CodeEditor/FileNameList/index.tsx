@@ -28,7 +28,7 @@ export default function FileNameList() {
         setCreating(false);
     }
 
-    const [creating, setCreating] = useState(false);
+    const [creating, setCreating] = useState(false); // 是否正在创建文件
 
     const addTab = () => {
         const newFileName = 'Comp' + Math.random().toString().slice(2,6) + '.tsx';
@@ -42,20 +42,20 @@ export default function FileNameList() {
         setSelectedFileName(ENTRY_FILE_NAME)
     }
 
-    const readonlyFileNames = [ENTRY_FILE_NAME, IMPORT_MAP_FILE_NAME, APP_COMPONENT_FILE_NAME];
+    const readonlyFileNames = [ENTRY_FILE_NAME, IMPORT_MAP_FILE_NAME, APP_COMPONENT_FILE_NAME]; // 只读文件名
 
     return <div className={styles.tabs}>
         {
             tabs.map((item, index, arr) => (
                 <FileNameItem 
                     key={item + index}  
-                    value={item} 
-                    readonly={readonlyFileNames.includes(item)}
-                    creating={creating && index === arr.length - 1}
-                    actived={selectedFileName === item} 
-                    onClick={() => setSelectedFileName(item)}
-                    onEditComplete={(name: string) => handleEditComplete(name, item)}
-                    onRemove={() => handleRemove(item)}
+                    value={item} // 文件名
+                    readonly={readonlyFileNames.includes(item)} // 是否只读
+                    creating={creating && index === arr.length - 1} // 是否正在创建文件
+                    actived={selectedFileName === item} // 是否选中
+                    onClick={() => setSelectedFileName(item)} // 点击文件名
+                    onEditComplete={(name: string) => handleEditComplete(name, item)} // 编辑完成
+                    onRemove={() => handleRemove(item)} // 删除文件
                 >
                 </FileNameItem>
             ))

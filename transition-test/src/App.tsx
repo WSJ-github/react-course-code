@@ -27,6 +27,7 @@ export default function App() {
   return (
     <div className='container' onClick={onClick}>
       {transitions((style, i) => {
+        // console.log(i);  【0，1，1】【1，2，2】【2，0，0】
         const Page = pages[i]
         return <Page style={style} />
       })}

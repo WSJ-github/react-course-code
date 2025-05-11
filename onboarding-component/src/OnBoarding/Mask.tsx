@@ -25,6 +25,7 @@ export const Mask: React.FC<MaskProps> = (props) => {
   } = props;
 
   useEffect(() => {
+    console.log('timeout effect');
     onAnimationStart?.();
     const timer = setTimeout(() => {
       onAnimationEnd?.();
@@ -38,8 +39,10 @@ export const Mask: React.FC<MaskProps> = (props) => {
   const [style, setStyle] = useState<CSSProperties>({});
 
   useEffect(() => {
+    // 这一步有隐患，可能掉入闭包陷阱，小心！！！
     const observer = new ResizeObserver(() => {
       const style = getMaskStyle(element, container || document.documentElement);
+      // console.log(element) // 每次都是相同的element
   
       setStyle(style);
     });
@@ -51,7 +54,7 @@ export const Mask: React.FC<MaskProps> = (props) => {
       return;
     }
 
-    element.scrollIntoView({
+    element.scrollIntoView({ // 滚动到元素中心
         block: 'center',
         inline: 'center'
     });

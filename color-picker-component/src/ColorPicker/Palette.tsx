@@ -12,11 +12,12 @@ const Palette: FC<{
     const transformRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const [offset, dragStartHandle] = useColorDrag({
+    const [offset, dragStartHandle] = useColorDrag({ // 内部维护offset状态
         containerRef,
         targetRef: transformRef,
         color,
         onDragChange: offsetValue => {
+            // 根据滑块偏移量和容器信息计算新color
             const newColor = calculateColor({
                 offset: offsetValue,
                 containerRef,
@@ -26,6 +27,7 @@ const Palette: FC<{
             onChange?.(newColor);
         },
         calculate: () => {
+            // 根据全局color state计算滑块偏移量
             return calculateOffset(containerRef, transformRef, color)
         }
     });
@@ -36,9 +38,11 @@ const Palette: FC<{
             className="color-picker-panel-palette"
             onMouseDown={dragStartHandle}
         >
+            {/* 滑块 */}
             <Transform ref={transformRef} offset={{x: offset.x, y: offset.y}}>
                 <Handler color={color.toRgbString()}/>
             </Transform>
+            {/* 固定背景板 */}
             <div 
                 className={`color-picker-panel-palette-main`}
                 style={{

@@ -31,7 +31,7 @@ export const FileNameItem: React.FC<FileNameItemProps> = (props) => {
 
   const handleDoubleClick = () => {
     setEditing(true)
-    setTimeout(() => {
+    setTimeout(() => { // 说明组件render任务应该是微任务
       inputRef?.current?.focus()
     }, 0)
   }
@@ -58,8 +58,8 @@ export const FileNameItem: React.FC<FileNameItemProps> = (props) => {
                     ref={inputRef}
                     className={styles['tabs-item-input']}
                     value={name}
-                    onBlur={hanldeInputBlur}
-                    onChange={(e) => setName(e.target.value)}
+                    onBlur={hanldeInputBlur} // 失焦触发即编辑完成
+                    onChange={(e) => setName(e.target.value)} // 输入框内容（文件名）变化
                 />
             ) : (
                 <>
@@ -71,7 +71,7 @@ export const FileNameItem: React.FC<FileNameItemProps> = (props) => {
                                 okText="确定"
                                 cancelText="取消"
                                 onConfirm={(e) => {
-                                    e?.stopPropagation();
+                                    e?.stopPropagation(); // 阻止事件冒泡
                                     onRemove();
                                 }}
                             >

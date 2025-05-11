@@ -1,0 +1,7 @@
+packages:
+  - 'upload-component'
+  - 'form-component'
+  - 'router-keepalive'
+  - 'react-dnd-test'
+  - 'react-playground-project'
+  - 'mini-react'

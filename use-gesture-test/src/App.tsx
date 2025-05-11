@@ -17,12 +17,21 @@ function Viewpager() {
   const width = window.innerWidth;
 
   const [props, api] = useSprings(pages.length, i => ({
-    x: i * width,
-    scale: 1
+    x: i * width, // 每张图片的初始位置，实际用transform: translate3d(<x>, 0px, 0px)去控制
+    scale: 1 // 每张图片的初始缩放比例
   }));
 
+  /***
+   * 【使用拖拽手势】
+   * active: 是否正在拖拽（cancel执行之后，还会最后一次执行回调，此时active为false）
+   * movement: 拖拽的距离（【负数】表示手势向左，但图片是向右移动，即下一张；【正数】表示手势向右，但图片是向左移动，即上一张）
+   * direction: 拖拽的方向（【负数】表示手势向左，【正数】表示手势向右）
+   * cancel: 取消拖拽
+   */
   const bind = useDrag(({ active, movement: [mx], direction: [xDir], cancel }) => {
+    console.log(active, mx, xDir);
     if (active && Math.abs(mx) > width / 2) {
+      // 拖动距离大于一半屏幕宽度，则切换图片
       let newIndex = index.current + (xDir > 0 ? -1 : 1);
 
       if(newIndex < 0) {
@@ -35,11 +44,12 @@ function Viewpager() {
 
       index.current =  newIndex;
 
-      cancel()
+      cancel() // 取消后还会调一次当前的回调，此时active为false
     }
+    // 调整各个图片的动画属性值，会有持续的动画效果（通过【api】拿到动画元素控制权）
     api.start(i => {
-      const x = (i - index.current) * width + (active ? mx : 0)
-      const scale = active ? 1 - Math.abs(mx) / width / 2 : 1
+      const x = (i - index.current) * width + (active ? mx : 0) // 调整图片x方向上的偏移
+      const scale = active ? 1 - Math.abs(mx) / width / 2 : 1 // 拖动距离越大，缩放比例越小，图片越小
       return { x, scale }
     })
   });

@@ -19,6 +19,7 @@ export interface MessageProps {
 }
 
 const MessageItem:FC<MessageProps> = (item) => {
+    // 控制默认消息item的显示和隐藏
     const {onMouseEnter, onMouseLeave} = useTimer({
         id: item.id!,
         duration: item.duration,
@@ -39,8 +40,10 @@ export interface MessageRef {
 
 export const MessageProvider = forwardRef<MessageRef, {}>((props, ref) => {
 
+    // 维护一个消息列表state，返回该列表已经所有增删改操作的api
     const { messageList, add, update, remove, clearAll } = useStore('top');
 
+    // 因为useImperativeHandle不是同步的，为了保证ref能及时拿到
     if('current' in ref!) {
         ref.current = {
             add,

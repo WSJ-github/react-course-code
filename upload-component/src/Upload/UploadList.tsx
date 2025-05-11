@@ -9,8 +9,8 @@ export interface UploadFile {
   status?: 'ready' | 'uploading' | 'success' | 'error';
   percent?: number;
   raw?: File;
-  response?: any;
-  error?: any;
+  response?: any; // 上传的响应
+  error?: any; // 上传的错误
 }
 
 interface UploadListProps {

@@ -2,7 +2,7 @@ import { Files } from './PlaygroundContext'
 import importMap from './template/import-map.json?raw'
 import AppCss from './template/App.css?raw'
 import App from './template/App.tsx?raw'
-import main from './template/main.tsx?raw'
+import main from './template/main.tsx?raw' // "?raw" 表示将文件内容作为字符串导入
 import { fileName2Language } from './utils'
 
 // app 文件名

@@ -4,7 +4,7 @@ import Editor from "../CodeEditor/Editor";
 import iframeRaw from './iframe.html?raw'
 import { IMPORT_MAP_FILE_NAME } from "../../files";
 import { Message } from "../Message";
-import CompilerWorker from './compiler.worker?worker'
+import CompilerWorker from './compiler.worker?worker' // vite中web worker的使用
 import { debounce } from "lodash-es";
 
 interface MessageData {
@@ -28,6 +28,7 @@ export default function Preview() {
             compilerWorkerRef.current.addEventListener('message', ({data}) => {
                 console.log('worker', data);
                 if(data.type === 'COMPILED_CODE') {
+                    // data.data 表示编译后的入口文件代码（import的其它文件代码也递归编译了，以blob的形式塞到内存中）
                     setCompiledCode(data.data);
                 } else {
                     // console.log('error', data);
@@ -36,12 +37,15 @@ export default function Preview() {
         }
     }, []);
 
+    // 文件内容有变更时，触发重新编译
     useEffect(debounce(() => {
         compilerWorkerRef.current?.postMessage(files)
     }, 500), [files]);
 
     const getIframeUrl = () => {
         const res = iframeRaw.replace(
+            // script type="importmap" 允许开发者在导入 JavaScript 模块时，控制浏览器如何解析模块标识符
+            // 仅适用于在 import 语句或 import()，即静态/动态esm导入 运算符中的模块标识符
             '<script type="importmap"></script>', 
             `<script type="importmap">${
                 files[IMPORT_MAP_FILE_NAME].value

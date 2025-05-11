@@ -33,10 +33,11 @@ function useColorDrag(
 
     const [offsetValue, setOffsetValue] = useState(offset || { x: 0, y: 0 });
     const dragRef = useRef({
-        flag: false
+        flag: false // 是否正在拖拽
     });
 
     useEffect(() => {
+        // 如果当前没有拖拽，则计算滑块偏移量（初始化操作or外层改变color时）
         if (dragRef.current.flag === false) {
           const calcOffset = calculate?.();
           if (calcOffset) {
@@ -45,10 +46,11 @@ function useColorDrag(
         }
       }, [color]);
 
-    useEffect(() => {
-        document.removeEventListener('mousemove', onDragMove);
-        document.removeEventListener('mouseup', onDragStop);
-    }, []);
+    // useEffect(() => {
+    //     console.log('useEffect 1');
+    //     document.removeEventListener('mousemove', onDragMove);
+    //     document.removeEventListener('mouseup', onDragStop);
+    // }, []);
 
     const updateOffset: EventHandle = e => {
         const scrollXOffset = document.documentElement.scrollLeft || document.body.scrollLeft;
@@ -58,8 +60,8 @@ function useColorDrag(
         const pageY = e.pageY - scrollYOffset;
 
         const { 
-            x: rectX,
-            y: rectY,
+            x: rectX, // 即left
+            y: rectY, // 即top
             width,
             height
         } = containerRef.current!.getBoundingClientRect();
@@ -75,17 +77,19 @@ function useColorDrag(
         const offsetX = Math.max(0, Math.min(pageX - rectX, width)) - centerOffsetX;
         const offsetY = Math.max(0, Math.min(pageY - rectY, height)) - centerOffsetY;
 
+        // 偏移量，即滑块左上角相对于容器的偏移量
         const calcOffset = {
             x: offsetX,
             y: direction === 'x' ? offsetValue.y : offsetY,
         };
 
-        setOffsetValue(calcOffset);
-        onDragChange?.(calcOffset);
+        setOffsetValue(calcOffset); // 更新偏移量，可以看出来偏移量是受控的
+        onDragChange?.(calcOffset); // 更新color
     };
 
 
     const onDragStop: EventHandle = e => {
+        console.log('onDragStop');
         document.removeEventListener('mousemove', onDragMove);
         document.removeEventListener('mouseup', onDragStop);
 
