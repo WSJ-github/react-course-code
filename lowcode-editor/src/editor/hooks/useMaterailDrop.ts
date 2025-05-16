@@ -15,18 +15,20 @@ export function useMaterailDrop(accept: string[], id: number) {
     const [{ canDrop }, drop] = useDrop(() => ({
         accept,
         drop: (item: ItemType, monitor) => {
+          // 防止重复drop动作触发，比如父组件和其子组件都能drop，如果东西drop到了子组件drop，父组件也会drop
             const didDrop = monitor.didDrop()
             if (didDrop) {
               return;
             }
 
+            // 画布内组件内拖拽移动的行为
             if(item.dragType === 'move') {
               const component = getComponentById(item.id, components)!;
 
               deleteComponent(item.id);
 
               addComponent(component, id)
-            } else {
+            } else { // 新组件拖拽到画布的行为
               const config = componentConfig[item.type];
 
               addComponent({
@@ -38,7 +40,7 @@ export function useMaterailDrop(accept: string[], id: number) {
             }
         },
         collect: (monitor) => ({
-          canDrop: monitor.canDrop(),
+          canDrop: monitor.canDrop(), // 暴露是否正在拖拽状态
         }),
     }));
 

@@ -32,6 +32,7 @@ function SelectedMask({ containerClassName, portalWrapperClassName, componentId 
   }, [componentId]);
 
   useEffect(() => {
+    // 必须加点延迟，因为getBoundingClientRect获取组件布局数据没有这么快能实时响应
     setTimeout(() => {
       updatePosition();
     }, 200);

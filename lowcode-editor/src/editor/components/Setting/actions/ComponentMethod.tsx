@@ -78,6 +78,7 @@ export function ComponentMethod(props: ComponentMethodProps) {
                 <div>
                     <Select
                         style={{ width: 500, height: 50 }}
+                        // 定义了当前组件允许暴露出去的方法（即被调用的方法），如果没有，options被设置为undefined也不要紧
                         options={componentConfig[selectedComponent?.name || ''].methods?.map(
                             method => ({ label: method.label, value: method.name })
                         )}

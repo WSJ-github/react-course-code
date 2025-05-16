@@ -28,9 +28,10 @@ const Table = ({ url, children }: CommonComponentProps) => {
     return React.Children.map(children, (item: any) => {
         if (item?.props?.type === 'date') {
             return {
-                title: item.props?.title,
-                dataIndex: item.props?.dataIndex,
-                render: (value: any) => value ? dayjs(value).format('YYYY-MM-DD') : null,
+                // item.props对应传入的子component内部传入的属性
+                title: item.props?.title, // 表头
+                dataIndex: item.props?.dataIndex, // dataIndex对应dataSource中当前字段的属性名
+                render: (value: any) => value ? dayjs(value).format('YYYY-MM-DD') : null, // 自定义字段渲染函数
             }
         } else {
             return {

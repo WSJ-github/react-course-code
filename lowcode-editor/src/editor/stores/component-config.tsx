@@ -59,20 +59,20 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
             name: 'Container',
             defaultProps: {},
             desc: '容器',
-            dev: ContainerDev,
-            prod: ContainerProd
+            dev: ContainerDev, // 开发环境渲染的组件（编辑用）
+            prod: ContainerProd // 生产环境渲染的组件（预览用）
         },
         Button: {
             name: 'Button',
-            defaultProps: {
+            defaultProps: { // 默认属性，初始时会被设置到组件的props中
                 type: 'primary',
                 text: '按钮'
             },
-            setter: [
+            setter: [ // 属性设置器，在组件的属性设置面板中展示
                 {
-                  name: 'type',
+                  name: 'type', // 对应prop字段
                   label: '按钮类型',
-                  type: 'select',
+                  type: 'select', // 组件类型
                   options: [
                     {label: '主按钮', value: 'primary'},
                     {label: '次按钮', value: 'default'},
@@ -84,7 +84,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
                   type: 'input',
                 },
             ],
-            stylesSetter: [
+            stylesSetter: [ // 样式设置器，在组件的样式设置面板中展示
                 {
                     name: 'width',
                     label: '宽度',
@@ -96,7 +96,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
                     type: 'inputNumber',
                 }
             ],
-            events: [
+            events: [ // 事件设置器，在组件的事件设置面板中展示（描述可以设置的事件类型）
                 {
                     name: 'onClick',
                     label: '点击事件',
@@ -133,7 +133,9 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
                     label: '取消事件'
                 },
             ],
-            methods: [
+            // 描述该类组件实例最终通过ref暴露出去的方法，可被外部调用的方法
+            // 组件联动 用到
+            methods: [ 
                 {
                     name: 'open',
                     label: '打开弹窗',

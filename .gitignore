@@ -7,3 +7,4 @@ yarn-*
 
 node_modules/
 dist/
+node_modules

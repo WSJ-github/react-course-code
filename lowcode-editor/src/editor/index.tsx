@@ -20,6 +20,7 @@ export default function ReactPlayground() {
                     <Allotment.Pane preferredSize={240} maxSize={400} minSize={200}>
                         <MaterialWrapper />
                     </Allotment.Pane>
+                    {/* 没设置宽高，那就默认自适应 */}
                     <Allotment.Pane>
                         <EditArea />
                     </Allotment.Pane>
