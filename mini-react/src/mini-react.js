@@ -36,7 +36,7 @@
     
     let nextUnitOfWork = null
     let wipRoot = null // 即将处理的fiber树（可能是根fiber节点，也可能是某个状态改变触发rerender的fiber节点）
-    let currentRoot = null
+    let currentRoot = null // 首轮处理完后的fiber根节点（从根节点可以遍历完整条fiber链）
     let deletions = null
     
     /**
@@ -50,12 +50,12 @@
             props: {
                 children: [element],
             },
-            alternate: currentRoot, // 旧的fiber树（链）
+            alternate: currentRoot, // 旧的fiber树（链）对应的根节点
         }
         
         deletions = [] // 需要删除的fiber节点列表
     
-        nextUnitOfWork = wipRoot // 下一个工作单元
+        nextUnitOfWork = wipRoot // 下一个工作单元（每个工作单元对应一个fiber节点）
     }
     
     /**
@@ -219,6 +219,10 @@
      * 类似于vue的patch vnode->实例 的过程
      * 
      * vdom结构 -转-> fiber结构
+     * 
+     * react diff就在这里面完成
+     * TODO:：但是感觉算法好像不太智能，可能跟架构本身的关系，如果同一父节点中的子节点调整位置，好像就复用不了了，全走“PLACEMENT”了
+     * 实际框架中应该是用key和当前oldFiber去做diff比较，从elements中筛出可以复用的部分，而不是位置不对就直接替换了？
      * @param {*} wipFiber 父fiber节点
      * @param {*} elements 子节点，react element（vdom）列表
      */
@@ -231,16 +235,17 @@
             const element = elements[index]
             let newFiber = null
     
-            const sameType = element?.type == oldFiber?.type
+            const sameType = element?.type == oldFiber?.type // TODO: 旧fiber节点 和 对应新的vdom节点 比较，他们的type取的是同一个东西
     
             // 如果类型相同，复用fiber节点
             if (sameType) {
+                // 即使是更新阶段，每个fiber节点也都是新的，只是旧fiber节点中的内容会被复用
                 newFiber = {
                     type: oldFiber.type,
                     props: element.props,
-                    dom: oldFiber.dom,
+                    dom: oldFiber.dom, // dom节点复用
                     return: wipFiber,
-                    alternate: oldFiber,
+                    alternate: oldFiber, // 新旧fiber 对应关联上
                     effectTag: "UPDATE", // 标识为更新
                 }
             }
@@ -257,7 +262,7 @@
             }
             if (oldFiber && !sameType) {
                 oldFiber.effectTag = "DELETION" // 老fiber节点标识为删除
-                deletions.push(oldFiber) // 加入删除列表
+                deletions.push(oldFiber) // 收集要被删除的旧fiber节点进待删除列表
             }
     
             if (oldFiber) {
@@ -297,14 +302,17 @@
 
         function setState(action) {
           const isFunction = typeof action === "function";
-
+          // 如果传入的是函数，那么先存起来
           stateHook.queue.push(isFunction ? action : () => action);
 
           // 当前fiber节点相关状态发生改变，需rerender
           wipRoot = {
+            // 为什么用currentFiber而不是wipFiber，因为currentFiber是local级局部变量，wipFiber是相对全局的局部变量会一直变
             ...currentFiber,
             alternate: currentFiber,
           };
+
+          // 渲染完首轮fiber链之后，requestIdleCallback(workLoop)还是会一直执行，直到wipRoot & nextUnitOfWork有值，就以这个fiber节点作为当前根节点递归更新所有子节点
           nextUnitOfWork = wipRoot;
         }
       
@@ -315,20 +323,30 @@
       const effectHook = {
         callback,
         deps,
+        // TODO:思考：<1>
+        // 这里好像没有处理 rerender过程中 alternate节点cleanup函数的持久态
+        // 因为在commitRoot阶段当前effect不被执行，那么后续就没办法触发上次渲染时 alternate节点执行时保留的cleanup函数了，因为拿不到了
+        // 解决方法：如果旧fiber节点的订阅没有被取消，试图在commitRoot阶段保留该订阅的卸载函数
         cleanup: undefined,
       };
       wipFiber.effectHooks.push(effectHook);
     }
     
+    /**
+     * TODO:
+     * 所有vdom节点都转成对应fiber链的形式，fiber链表已构造完成
+     * dfs递归处理fiber链
+     */
     function commitRoot() {
-        deletions.forEach(commitWork) // 递归处理删除的fiber节点
-        commitWork(wipRoot.child) // 递归处理子节点
+        deletions.forEach(commitWork) // 递归处理要删除的fiber节点（移除dom节点与父dom之间的关联）
+        commitWork(wipRoot.child) // 递归处理子节点（为链上dom节点建立关联），根据fiber节点的类型做相对应处理
         commitEffectHooks() // 处理effect钩子
         currentRoot = wipRoot // 更新当前根fiber节点树（链）
         wipRoot = null // 重置wipRoot
         deletions = [] // 重置deletions
     }
     
+    // TODO: 核心（处理fiber链）
     function commitWork(fiber) {
         if (!fiber) {
             return
@@ -343,9 +361,16 @@
         if (fiber.effectTag === "PLACEMENT" && fiber.dom != null) {
             domParent.appendChild(fiber.dom)
         } else if (fiber.effectTag === "UPDATE" && fiber.dom != null) {
-            updateDom(fiber.dom, fiber.alternate.props, fiber.props)
+            updateDom(fiber.dom, fiber.alternate.props, fiber.props) // fiber节点复用，说明对应dom节点也会复用，这里是去更新该dom节点属性
         } else if (fiber.effectTag === "DELETION") {
             commitDeletion(fiber, domParent)
+            
+            // <2>
+            // 感觉这里应该直接return，因为所有fiber的复用和是否删除应该在diff，即reconcile阶段就确定的了
+            // 如果需要删除，那么所有需要删除链接的节点都会被装入deletions列表，而不需要下面递归去判断子节点和兄弟节点
+            // 而且从始至终都没有发现有对即将删除的oldfiber系列child做处理，effectTag也没改，所以意味着这个要删除节点的子节点的effectTag属性还是“PLACEMENT”
+            // 因此我觉得这里没必要王再执行了
+            return
         }
     
         commitWork(fiber.child) // 递归处理子节点
@@ -382,6 +407,8 @@
     
                 if (!hook.deps || !isDepsEqual(hook.deps, deps)) {
                     hook.cleanup?.();
+                    
+                    hook.cleanup = undefined // <1> 
                 }
             })
     
@@ -391,6 +418,8 @@
     
         function run(fiber) {
             if (!fiber) return;
+
+            const oldEffectHooks = fiber.alternate?.effectHooks // <1>
       
             fiber.effectHooks?.forEach((newHook, index) => {
                 if(!fiber.alternate) {
@@ -409,14 +438,16 @@
                         newHook.cleanup = newHook.callback()
                     }
                 }
+                if(oldEffectHooks?.[index]?.cleanup && !newHook.cleanup) // <1>
+                    newHook.cleanup = oldEffectHooks[index].cleanup
             });
     
             run(fiber.child);
             run(fiber.sibling);
         }
       
-        runCleanup(wipRoot);
-        run(wipRoot);
+        runCleanup(wipRoot); // 递归 执行旧effect订阅清除函数
+        run(wipRoot); // 递归 执行所有fiber节点种收录的effect函数
     }
     
     const MiniReact = {
