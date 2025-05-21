@@ -1,23 +1,53 @@
 {
-    "compilerOptions": {
-      "declaration": true,
-      "allowSyntheticDefaultImports": true,
-      "target": "es2015",
-      "lib": ["ES2020", "DOM", "DOM.Iterable"],
-      "module": "ESNext",
-      "skipLibCheck": true,
-      "moduleResolution": "Node",
-      "resolveJsonModule": true,
-      "isolatedModules": true,
-      "jsx": "react",  
-      "allowImportingTsExtensions":null,
-      "strict": true,
-    },
-    "include": [
-      "src"
-    ],
-    "exclude": [
-      "src/**/*.test.tsx",
-      "src/**/*.stories.tsx"
-    ]
-  }
+  "compilerOptions": {
+    // 生成 .d.ts 声明文件，使其他项目可以导入并获得类型提示
+    "declaration": true,
+    
+    // 允许导入没有默认导出的模块时使用默认导入语法
+    // 例如：import React from 'react' 而不是 import * as React from 'react'
+    "allowSyntheticDefaultImports": true,
+    
+    // 指定编译后的 JavaScript 版本，ES2015 即 ES6
+    "target": "es2015",
+    
+    // 指定项目中可用的库，包括 ES2020 的特性和 DOM 相关 API
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    
+    // 指定模块系统，ESNext 使用最新的 ES 模块语法
+    "module": "ESNext",
+    
+    // 跳过对库文件（如 node_modules）的类型检查，加快编译速度
+    "skipLibCheck": true,
+    
+    // 指定模块解析策略，Node 表示使用 Node.js 的模块解析算法
+    "moduleResolution": "Node",
+    
+    // 允许导入 JSON 文件并获得类型支持
+    "resolveJsonModule": true,
+    
+    // 确保每个文件都被视为单独的模块，有助于 Babel 等工具处理
+    "isolatedModules": true,
+    
+    // 指定 JSX 代码的处理方式，"react" 表示转换为 React.createElement 调用
+    "jsx": "react",
+    
+    // 设为 null 表示禁用允许导入带 .ts/.tsx 扩展名的文件
+    "allowImportingTsExtensions": null,
+    
+    // 启用所有严格类型检查选项，包括 strictNullChecks、noImplicitAny 等
+    "strict": true
+  },
+  
+  // 指定要包含在编译中的文件或目录
+  "include": [
+    "src"
+  ],
+  
+  // 指定要排除在编译之外的文件
+  "exclude": [
+    // 排除测试文件
+    "src/**/*.test.tsx",
+    // 排除 Storybook 故事文件
+    "src/**/*.stories.tsx"
+  ]
+}
