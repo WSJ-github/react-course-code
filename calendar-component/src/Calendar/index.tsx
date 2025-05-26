@@ -32,10 +32,13 @@ function Calendar(props: CalendarProps) {
     } = props;
 
     // 封装支持受控&非受控模式
+    // 内部会维护组件当前state和处理onChange的调用
     const [curValue, setCurValue] = useControllableValue<Dayjs>(props, {
         defaultValue: dayjs()
     });
 
+    // 月份和当前日期状态分开维护，因为如果切换月份的话，我们是要保证当前日期不被影响的
+    // 月份信息，主要是获取其中的月，然后渲染当前月的日历
     const [curMonth, setCurMonth] = useState<Dayjs>(curValue);
 
     const classNames = cs("calendar", className);
@@ -47,6 +50,7 @@ function Calendar(props: CalendarProps) {
     }
 
     function prevMonthHandler() {
+        // datejs内部会自动处理月份的边界问题，比如5.31减一个月会变成4.30
         setCurMonth(curMonth.subtract(1, 'month'));
     }
 

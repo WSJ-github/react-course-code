@@ -86,7 +86,7 @@ function MonthCalendar(props: MonthCalendarProps) {
             }
             rows.push(row);
         }
-        return rows.map(row => <div className="calendar-month-body-row">{row}</div>)
+        return rows.map((row, index) => <div key={'row' + index} className="calendar-month-body-row">{row}</div>)
     }
 
     return <div className="calendar-month">

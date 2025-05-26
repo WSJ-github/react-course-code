@@ -3,8 +3,11 @@
     // 生成 .d.ts 声明文件，使其他项目可以导入并获得类型提示
     "declaration": true,
     
-    // 允许导入没有默认导出的模块时使用默认导入语法
+    // 允许导入没有默认导出的模块时使用默认导入语法（类型校验层面）
     // 例如：import React from 'react' 而不是 import * as React from 'react'
+    // react用的cjs模块规则，属于没有默认导出范畴
+    // 【esModuleInterop配置和allowSyntheticDefaultImports相当，但是前者主要用于tsc参与模块编译转换的情况】
+    // 而且开启前者，后者默认会被开启
     "allowSyntheticDefaultImports": true,
     
     // 指定编译后的 JavaScript 版本，ES2015 即 ES6

@@ -5,3 +5,5 @@ packages:
   - 'react-dnd-test'
   - 'react-playground-project'
   - 'mini-react'
+  - 'guang-components'
+  - 'guang-components-rollup'

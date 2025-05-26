@@ -1,3 +1,5 @@
 {
-  "typescript.suggestionActions.enabled": true
+  "typescript.suggestionActions.enabled": true,
+  "liveServer.settings.port": 5501,
+  "editor.tabSize": 2
 }

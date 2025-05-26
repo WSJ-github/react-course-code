@@ -70,6 +70,9 @@ export const MessageProvider = forwardRef<MessageRef, {}>((props, ref) => {
                     <TransitionGroup>
                         {
                             messageList[direction].map(item => {
+                                // timeout 属性在 React 的 CSSTransition 组件中具有以下作用：
+                                // 定义过渡动画的持续时间：它指定了过渡动画的总时长，单位为毫秒。
+                                // 控制类名应用时间：决定了各个过渡阶段（进入和退出）的类名应用多长时间。
                                 return  <CSSTransition key={item.id} timeout={1000} classNames='message'>
                                     <MessageItem onClose={remove} {...item}></MessageItem>
                                 </CSSTransition>

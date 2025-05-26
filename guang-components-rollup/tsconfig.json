@@ -3,23 +3,19 @@
       "outDir": "dist",
       "declaration": true,
       "allowSyntheticDefaultImports": true,
-      "target": "es2015",
+      "target": "es2015", // 指定编译后的 JavaScript 代码版本
       "lib": ["ES2020", "DOM", "DOM.Iterable"],
-      "module": "ESNext",
+      "module": "ESNext", // 指定模块代码的生成方式（即指定转换后的模块规则）
       "skipLibCheck": true,
-      "moduleResolution": "bundler",
-      "allowImportingTsExtensions": true,
+      "moduleResolution": "bundler", // 现代打包工具优化的解析策略
+      "allowImportingTsExtensions": true, // 允许在导入语句中使用 .ts、.tsx 等 TypeScript 扩展名
       "resolveJsonModule": true,
-      "isolatedModules": true,
-      "noEmit": true,      
-      "jsx": "react-jsx", 
+      "isolatedModules": true, // 限制使用一些只有 TypeScript 才能理解的特性（代码转译兼容性方面的配置）
+      "noEmit": true, // 禁止生成输出文件
+      "jsx": "react-jsx",  // 指定 JSX 代码的生成方式（这里的值表示使用react runtime的方式）
       "strict": true,
     },
     "include": [
       "src"
-    ],
-    "exclude": [
-      "src/**/*.test.tsx",
-      "src/**/*.stories.tsx"
     ]
   }

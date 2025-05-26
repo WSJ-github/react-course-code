@@ -12,6 +12,7 @@ export function useTimer(props: UseTimerProps) {
   const timer = useRef<number | null>(null);
 
   const startTimer = () => {
+    if(duration === 0) return;
     timer.current = window.setTimeout(() => {
         remove(id);
         removeTimer();

@@ -25,7 +25,7 @@ const MessageItem:FC<MessageProps> = (item) => {
         remove: item.onClose!,
     });
 
-    return <div className="message-item" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+    return <div style={item.style} className="message-item" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         {item.content}
     </div>
 }
