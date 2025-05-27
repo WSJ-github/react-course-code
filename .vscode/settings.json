@@ -1,5 +1,6 @@
 {
   "typescript.suggestionActions.enabled": true,
   "liveServer.settings.port": 5501,
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "editor.indentSize": "tabSize"
 }

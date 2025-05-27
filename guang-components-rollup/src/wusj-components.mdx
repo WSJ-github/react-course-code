@@ -1,0 +1,189 @@
+import { Meta } from "@storybook/blocks";
+
+export const RightArrow = () => <svg 
+    viewBox="0 0 14 14" 
+    width="8px" 
+    height="14px" 
+    style={{ 
+      marginLeft: '4px',
+      display: 'inline-block',
+      shapeRendering: 'inherit',
+      verticalAlign: 'middle',
+      fill: 'currentColor',
+      'path fill': 'currentColor'
+    }}
+>
+  <path d="m11.1 7.35-5.5 5.5a.5.5 0 0 1-.7-.7L10.04 7 4.9 1.85a.5.5 0 1 1 .7-.7l5.5 5.5c.2.2.2.5 0 .7Z" />
+</svg>
+
+<Meta title="wusj-components 简介" />
+
+# wusj-components 组件库
+
+wusj-components 是一个轻量级的 React 组件库，提供了一系列实用的 UI 组件，帮助开发者快速构建现代化的 Web 应用。
+
+## 安装与使用
+
+详细的安装和使用教程请访问：[wusj-components 使用文档](http://8.138.217.246/wusj-components/)
+
+### 快速开始
+
+```bash
+# 使用 npm 安装
+npm install wusj-components --save
+
+# 或使用 yarn 安装
+yarn add wusj-components
+```
+
+### 基本使用
+
+```jsx
+import { Calendar, Watermark } from 'wusj-components';
+import 'wusj-components/dist/index.css';
+
+function App() {
+  return (
+    <div>
+      <Calendar />
+      <Watermark content="示例水印">
+        <div>您的内容</div>
+      </Watermark>
+    </div>
+  );
+}
+```
+
+## 组件总览
+
+### Calendar 日历组件
+
+日历组件用于展示和选择日期，支持自定义日期渲染、国际化等功能。
+
+```jsx
+import { Calendar } from 'wusj-components';
+import dayjs from 'dayjs';
+
+function App() {
+  return (
+    <Calendar 
+      defaultValue={dayjs()} 
+      onChange={(date) => console.log(date)} 
+    />
+  );
+}
+```
+
+**主要特性：**
+
+- 支持受控和非受控模式
+- 自定义日期单元格渲染
+- 国际化支持
+- 今天、上月、下月快捷导航
+
+### Watermark 水印组件
+
+水印组件用于在页面上添加文字或图片水印，可用于标识版权或保密信息。
+
+```jsx
+import { Watermark } from 'wusj-components';
+
+function App() {
+  return (
+    <Watermark 
+      content={['机密文件', '内部使用']} 
+      fontStyle={{ color: 'rgba(0,0,0,0.15)' }}
+    >
+      <div style={{ height: 500 }}>
+        您的内容将显示水印
+      </div>
+    </Watermark>
+  );
+}
+```
+
+**主要特性：**
+
+- 支持文字水印和图片水印
+- 自定义水印样式、角度和间距
+- 防删除检测
+- 支持多行文本
+
+### Message 全局提示
+
+全局消息提示组件，用于展示操作反馈、通知等临时性信息。
+
+```jsx
+import { ConfigProvider, useMessage } from 'wusj-components';
+
+// 在应用根组件
+function App() {
+  return (
+    <ConfigProvider>
+      <YourComponent />
+    </ConfigProvider>
+  );
+}
+
+// 在任意组件内
+function YourComponent() {
+  const message = useMessage();
+  
+  const showMessage = () => {
+    message.add({ content: '操作成功!' });
+  };
+  
+  return <button onClick={showMessage}>显示消息</button>;
+}
+```
+
+**主要特性：**
+
+- 全局消息管理
+- 支持自定义持续时间
+- 支持顶部和底部显示
+- 支持更新和手动关闭
+- 支持自定义样式和复杂内容
+
+## 高级用法
+
+### UMD 方式使用
+
+对于不使用构建工具的项目，可以通过 UMD 方式引入：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/dayjs@1.11.11/dayjs.min.js"></script>
+    <script src="https://unpkg.com/wusj-components"></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/wusj-components/dist/index.css" />
+
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
+
+        root.render(React.createElement(WSJ.Calendar, { defaultValue: dayjs('2024-07-01') }));
+    </script>
+</body>
+</html>
+```
+
+### 按需加载
+
+如果你使用的是支持 Tree Shaking 的构建工具，可以直接导入需要的组件，无需额外配置：
+
+```jsx
+import { Calendar } from 'wusj-components';
+import 'wusj-components/dist/index.css';
+```
+

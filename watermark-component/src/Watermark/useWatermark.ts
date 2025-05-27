@@ -96,8 +96,8 @@ const measureTextSize = (
   const angle = (rotate * Math.PI) / 180; // 角度转弧度
 
   return {
-    originWidth: width, // 原始宽度（未旋转）
-    originHeight: height, // 原始高度（未旋转）
+    originWidth: width, // 原始行最长宽度（未旋转）
+    originHeight: height, // 原始所有行总高度（未旋转）
     // 注意此时只是用公式计算出文字块渲染后的测量高度，并没有实际绘制，所以此时width和height只是测量值
     width: Math.ceil(Math.abs(Math.sin(angle) * height) + Math.abs(Math.cos(angle) * width)), // 旋转后文字块的宽度
     height: Math.ceil(Math.abs(Math.sin(angle) * width) + Math.abs(height * Math.cos(angle))), // 旋转后文字块的高度
@@ -148,6 +148,7 @@ const getCanvasData = async (
     // TODO:
     // 在绘制内容之前调用的。这是因为 Canvas 的变换操作（如 translate、rotate、scale）会影响后续的所有绘制操作
     // 先设置好所有变换，再进行绘制，这样可以确保内容按预期方式显示
+    // TODO: 旋转坐标系统，这会影响后续所有绘制的内容，而不是旋转已经绘制的内容或画布本身。
     ctx.rotate(RotateAngle);
   };
 
@@ -177,7 +178,7 @@ const getCanvasData = async (
       const { height: lineHeight, width: lineWidth } = measureSize.lineSize[index];
 
       // 参考图片绘制注释
-      const xStartPoint = -lineWidth / 2; // （单行文字块绘制原点向左偏移）效果：每行文字都宽度居
+      const xStartPoint = -lineWidth / 2; // （单行文字块绘制原点向左偏移）效果：每行文字都宽度居中
       // （单行文字块绘制原点向上偏移）效果：定位到相对正确的绘制起点，所以这里用measureSize.originHeight，不然向上偏移多了会导致旋转后部分被隐藏掉了
       const yStartPoint = -(options.height || measureSize.originHeight) / 2 + lineHeight * index;
 
@@ -217,6 +218,7 @@ const getCanvasData = async (
       // 如果这时候我们直接从(0,0)开始画图，即ctx.drawImage(img, 0, 0, width, height);那么图片会把画布原点当成绘制的起点，即图片的左上角
       // 所以这里设置-width / 2, -height / 2，是让图片像左上角偏移图片一般的位置，此时图片的中心点正好和画布原点重合
       // 当然因为内部设置了ctx.scale(ratio, ratio);，所以也会等比例放大绘制区域，当然这不需要我们太关注，是自动完成的
+      // 补充TODO: 其实这里移动之后绘制的数据块的上下左右都只有对应gap的1/2，但是因为canvas背景块是repeat的，所以重叠的canvas块也是只有1/2，加起来就是1，正好是gap值
       ctx.drawImage(img, -width / 2, -height / 2, width, height);
       return resolve({ base64Url: canvas.toDataURL(), width, height });
     };

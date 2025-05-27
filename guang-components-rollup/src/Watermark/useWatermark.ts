@@ -19,9 +19,9 @@ const toNumber = (value?: string | number, defaultValue?: number) => {
   return isNumber(numberVal) ? numberVal : defaultValue;
 };
 
-const defaultOptions = {
+export const defaultOptions = {
   rotate: -20,
-  zIndex: 1,
+  zIndex: -1,
   width: 100,
   gap: [100, 100],
   fontStyle: {
@@ -40,7 +40,7 @@ const getMergedOptions = (o: Partial<WatermarkOptions>) => {
     ...options,
     rotate: options.rotate || defaultOptions.rotate,
     zIndex: options.zIndex || defaultOptions.zIndex,
-    fontStyle: { ...defaultOptions.fontStyle, ...options.fontStyle },
+    fontStyle: merge({}, defaultOptions.fontStyle, options.fontStyle),
     width: toNumber(options.width, options.image ? defaultOptions.width : undefined),
     height: toNumber(options.height, undefined)!,
     getContainer: options.getContainer!,
@@ -199,7 +199,8 @@ export default function useWatermark(params: WatermarkOptions) {
     if (!container) {
       return;
     }
-
+    console.log('options', options);
+    console.log('mergedOptions', mergedOptions);
     getCanvasData(mergedOptions).then(({ base64Url, width, height }) => {
 
       const offsetLeft = mergedOptions.offset[0] + 'px';
