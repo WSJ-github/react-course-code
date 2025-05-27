@@ -1,6 +1,6 @@
 {
   "name": "wusj-components",
-  "version": "1.1.2",
+  "version": "1.3.0",
   "description": "",
   "main": "dist/cjs.js",
   "module": "dist/esm.js",
@@ -14,7 +14,7 @@
   "scripts": {
     "build": "rollup -c rollup.config.mjs",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "publish": "npm --registry=https://registry.npmjs.org/ publish",
+    "publish:d": "npm --registry=https://registry.npmjs.org/ publish",
     "publish:1": "npm version patch && npm --registry=https://registry.npmjs.org/ publish",
     "publish:2": "npm version minor && npm --registry=https://registry.npmjs.org/ publish",
     "publish:3": "npm version major && npm --registry=https://registry.npmjs.org/ publish",
