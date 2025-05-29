@@ -8,10 +8,15 @@ export type SizeType = 'small' | 'middle' | 'large' | number | undefined;
 export interface SpaceProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   style?: React.CSSProperties;
+  /** 间距大小(row-gap, column-gap) */
   size?: SizeType | [SizeType, SizeType];
+  /** 排列方向 */
   direction?: 'horizontal' | 'vertical';
+  /** 对齐方式 */
   align?: 'start' | 'end' | 'center' | 'baseline';
+  /** 分割线 */
   split?: React.ReactNode;
+  /** 是否换行 */
   wrap?: boolean;
 }
 

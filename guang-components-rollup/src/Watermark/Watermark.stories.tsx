@@ -7,10 +7,38 @@ const meta = {
   component: Watermark,
   parameters: {
     layout: "centered",
+    docs: {
+      description: {
+        component: `
+\`支持text水印\` \`支持image水印\` \`基于canvas绘制\` \`防删除检测（基于mutationObserver）\` 
+
+## Example Usage
+
+\`\`\`jsx
+import { Watermark } from 'wusj-components';
+
+function App() {
+  return (
+    <Watermark>
+      <div style={{ height: 600 }}>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos quod
+          deserunt quidem quas in rem ipsam ut nesciunt asperiores dignissimos
+          recusandae minus, eaque, harum exercitationem esse sapiente? Eveniet,
+          id provident!
+        </p>
+      </div>
+    </Watermark>
+  );
+}
+\`\`\`
+`
+      }
+    }
     // layout: 'fullscreen'
   },
   tags: ["autodocs"],
-	args: {
+	args: { // 实例默认参数
 		content: ["wusj-components", "测试水印"]
   },
   argTypes: {

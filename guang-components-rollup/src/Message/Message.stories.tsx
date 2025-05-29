@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ConfigProvider } from "./ConfigProvider";
+import { ConfigProvider as MessageConfigProvider } from "./ConfigProvider";
 import { useMessage } from "./useMessage";
 import { Button } from "antd";
 import { useRef } from "react";
@@ -11,23 +11,23 @@ const meta = {
     docs: {
       description: {
         component: `
-全局消息提示组件，用于展示操作反馈、通知等临时性信息。
+\`全局消息提示组件\` \`多种位置\` \`自定义样式\` \`复杂内容\` \`消息更新与关闭\` \`多条消息与清除\`
 
-## 使用方法
+## Example Usage
 
-1. 在应用最外层包裹 ConfigProvider
+1. 在应用最外层包裹 MessageConfigProvider
 2. 在组件内通过 useMessage hook 获取消息控制器
 3. 调用 message.add() 方法显示消息
 
 \`\`\`jsx
 // 在应用根组件
-import { ConfigProvider } from './Message/ConfigProvider';
+import { MessageConfigProvider } from 'wusj-components';
 
 function App() {
   return (
-    <ConfigProvider>
+    <MessageConfigProvider>
       <YourApp />
-    </ConfigProvider>
+    </MessageConfigProvider>
   );
 }
 
@@ -76,9 +76,9 @@ export const Basic: Story = {
     };
 
     return (
-      <ConfigProvider>
+      <MessageConfigProvider>
         <ButtonList />
-      </ConfigProvider>
+      </MessageConfigProvider>
     );
   },
   parameters: {
@@ -101,9 +101,9 @@ export const Basic: Story = {
     };
 
     return (
-      <ConfigProvider>
+      <MessageConfigProvider>
         <ButtonList />
-      </ConfigProvider>
+      </MessageConfigProvider>
     );
 }
 `,
@@ -151,9 +151,9 @@ export const MessagePosition: Story = {
     };
 
     return (
-      <ConfigProvider>
+      <MessageConfigProvider>
         <Demo />
-      </ConfigProvider>
+      </MessageConfigProvider>
     );
   },
 };
@@ -205,9 +205,9 @@ export const CustomDuration: Story = {
     };
 
     return (
-      <ConfigProvider>
+      <MessageConfigProvider>
         <Demo />
-      </ConfigProvider>
+      </MessageConfigProvider>
     );
   },
 };
@@ -242,9 +242,9 @@ export const CustomStyle: Story = {
     };
 
     return (
-      <ConfigProvider>
+      <MessageConfigProvider>
         <Demo />
-      </ConfigProvider>
+      </MessageConfigProvider>
     );
   },
 };
@@ -301,9 +301,9 @@ export const ComplexContent: Story = {
     };
 
     return (
-      <ConfigProvider>
+      <MessageConfigProvider>
         <Demo />
-      </ConfigProvider>
+      </MessageConfigProvider>
     );
   },
 };
@@ -354,9 +354,9 @@ export const UpdateAndClose: Story = {
     };
 
     return (
-      <ConfigProvider>
+      <MessageConfigProvider>
         <Demo />
-      </ConfigProvider>
+      </MessageConfigProvider>
     );
   },
 };
@@ -385,9 +385,9 @@ export const MultipleMessages: Story = {
     };
 
     return (
-      <ConfigProvider>
+      <MessageConfigProvider>
         <Demo />
-      </ConfigProvider>
+      </MessageConfigProvider>
     );
   },
 };

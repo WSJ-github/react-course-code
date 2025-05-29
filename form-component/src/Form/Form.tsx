@@ -28,7 +28,7 @@ const Form= forwardRef<FormRefApi, FormProps>((props: FormProps, ref) => {
     } = props;
 
     
-    console.log('111111') // Form渲染函数先执行
+    // console.log('111111') // Form渲染函数先执行
 
 
     const [values, setValues] = useState<Record<string, any>>(initialValues || {}); // 全局表单Store，收集所有表单项数据
@@ -54,7 +54,7 @@ const Form= forwardRef<FormRefApi, FormProps>((props: FormProps, ref) => {
      * @param value 表单项的值
      */
     const onValueChange = (key: string, value: any) => {
-        values[key] = value;
+        values[key] = value; // 直接更新全局表单项值，不会触发全量rerender
     }
 
     // 表单提交

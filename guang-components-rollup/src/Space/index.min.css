@@ -1,0 +1,1 @@
+.space{display:inline-flex}.space-vertical{flex-direction:column}.space-align-center{align-items:center}.space-align-start{align-items:flex-start}.space-align-end{align-items:flex-end}.space-align-baseline{align-items:baseline}.box{width:100px;height:100px;background:pink;border:1px solid #000}.container{width:300px;height:300px;background:green}

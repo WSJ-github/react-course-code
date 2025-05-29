@@ -8,15 +8,38 @@ import replace from '@rollup/plugin-replace';
 export default {
     input: 'src/index.ts',
     treeshake: true, // 摇树优化（默认开启）
-    external: [ 'react', 'react-dom' ], // 外部依赖（不打包进bundle）
+    external: [
+        'react', 
+        'react-dom',
+    ], // 外部依赖（不打包进bundle）,把运行时依赖全加进来
     output: [
         {
             file: 'dist/esm.js',
             format: 'esm',
+            external: [
+                'react', 
+                'react-dom',
+                'classnames',
+                'dayjs',
+                'lodash-es',
+                'react-transition-group',
+                'async-validator',
+                'ahooks'
+            ]
         },
         {
             file: 'dist/cjs.js',
-            format: "cjs"
+            format: "cjs",
+            external: [
+                'react', 
+                'react-dom',
+                'classnames',
+                'dayjs',
+                'lodash-es',
+                'react-transition-group',
+                'async-validator',
+                'ahooks'
+            ]
         },
         {
             file: 'dist/umd.js',

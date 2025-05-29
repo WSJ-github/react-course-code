@@ -19,10 +19,15 @@ type Side = 'top' | 'right' | 'bottom' | 'left';
 type AlignedPlacement = `${Side}-${Alignment}`;
 
 interface PopoverProps extends PropsWithChildren {
+    /** 提示内容 */
     content: ReactNode,
+    /** 触发方式 */
     trigger?: 'hover' | 'click'
+    /** 显示位置 */
     placement?: Side | AlignedPlacement,
+    /** 是否打开 */
     open?: boolean,
+    /** 打开关闭回调 */
     onOpenChange?: (open: boolean) => void,
     className?: string;
     style?: CSSProperties

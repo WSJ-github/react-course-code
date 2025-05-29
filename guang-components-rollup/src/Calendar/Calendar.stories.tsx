@@ -6,7 +6,35 @@ const meta = {
     title: 'wusj-components/Calendar 日历组件',
     component: Calendar,
     parameters: {
-        layout: 'centered'
+        layout: 'centered',
+        docs: {
+            description: {
+              component: `
+\`受控&非受控\` \`自定义日期单元格\` \`国际化\` 
+
+## Example Usage
+
+\`\`\`jsx
+import { Calendar } from 'wusj-components';
+
+function App() {
+return (
+    <Watermark>
+    <div style={{ height: 600 }}>
+        <p>
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos quod
+        deserunt quidem quas in rem ipsam ut nesciunt asperiores dignissimos
+        recusandae minus, eaque, harum exercitationem esse sapiente? Eveniet,
+        id provident!
+        </p>
+    </div>
+    </Watermark>
+);
+}
+\`\`\`
+      `
+            }
+          }
         // layout: 'fullscreen'
     },
     tags: ['autodocs'],
